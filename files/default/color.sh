@@ -1,24 +1,26 @@
+source /usr/local/Cellar/coreutils/8.10/aliases
+
 # color detection magic
-use_color=false
+use_color=true
 
 # dircolors --print-database uses its own built-in database
 # instead of using /etc/DIR_COLORS.  Try to use the external file
 # first to take advantage of user additions.  Use internal bash
 # globbing instead of external grep binary.
-safe_term=${TERM//[^[:alnum:]]/?}   # sanitize TERM
-match_lhs=""
-[[ -f ~/.dir_colors   ]] && match_lhs="${match_lhs}$(<~/.dir_colors)"
-[[ -f /etc/DIR_COLORS ]] && match_lhs="${match_lhs}$(</etc/DIR_COLORS)"
-[[ -z ${match_lhs}    ]] \
-	&& type -P dircolors >/dev/null \
-	&& match_lhs=$(dircolors --print-database)
-[[ $'\n'${match_lhs} == *$'\n'"TERM "${safe_term}* ]] && use_color=true
-
-unset safe_term match_lhs
+# safe_term=${TERM//[^[:alnum:]]/?}   # sanitize TERM
+# match_lhs=""
+# [[ -f ~/.dir_colors   ]] && match_lhs="${match_lhs}$(<~/.dir_colors)"
+# [[ -f /etc/DIR_COLORS ]] && match_lhs="${match_lhs}$(</etc/DIR_COLORS)"
+# [[ -z ${match_lhs}    ]] \
+#   && type -P dircolors >/dev/null \
+#   && match_lhs=$(dircolors --print-database)
+# [[ $'\n'${match_lhs} == *$'\n'"TERM "${safe_term}* ]] && use_color=true
+# 
+# unset safe_term match_lhs
 
 
 if ${use_color}; then
-	if type -P dircolors >/dev/null ; then
+	if type -P gdircolors >/dev/null ; then
 		if [[ -f ~/.dir_colors ]] ; then
 			eval $(dircolors -b ~/.dir_colors)
 		elif [[ -f /etc/DIR_COLORS ]] ; then
@@ -26,7 +28,7 @@ if ${use_color}; then
 		fi
 	fi
 
-	alias ls="ls --color=auto"
+	alias ls='gls -hF --color=auto'
 	alias grep="grep --color=auto"
 
 	# this is a lot uglier than the old color() function, but should be more

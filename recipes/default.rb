@@ -29,8 +29,9 @@ file "/etc/bashrc" do
   only_if %{test -f /etc/bash.bashrc}
 end
 
-link "/etc/bash.bashrc" do
+link "/etc/bashrc" do
   to "/etc/bash/bashrc"
+  only_if platform?("mac_os_x")
 end
 
 file "/root/.bashrc" do
