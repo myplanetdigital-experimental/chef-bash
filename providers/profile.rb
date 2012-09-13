@@ -1,10 +1,11 @@
+::BASH_PROFILE_DIRNAME = ".bash_profile.d"
+
 action :create do
   user = new_resource.user
   home = %x[echo ~#{user}].chomp
-  ::BASH_PROFILE_DIRNAME = ".bash_profile.d"
-  ::BASH_PROFILE_SUBDIR = ::File.expand_path("#{home}/#{BASH_PROFILE_DIRNAME}")
+  bash_profile_subdir = ::File.expand_path("#{home}/#{BASH_PROFILE_DIRNAME}")
 
-  directory BASH_PROFILE_SUBDIR do
+  directory bash_profile_subdir do
     owner user
   end
 
@@ -12,9 +13,10 @@ action :create do
     cookbook "bash"
     source "bash_profile.erb"
     owner user
+    variables(:bash_profile_subdir => bash_profile_subdir)
   end
 
-  template "#{BASH_PROFILE_SUBDIR}/#{new_resource.name}.sh" do
+  template "#{bash_profile_subdir}/#{new_resource.name}.sh" do
     cookbook new_resource.cookbook_name.to_s
     source "bash_profile-#{new_resource.name}.sh.erb"
     owner user
