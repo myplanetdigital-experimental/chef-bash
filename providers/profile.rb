@@ -1,4 +1,4 @@
-::BASH_INCLUDES_DIRNAME = ".bash_profile_includes"
+::BASH_INCLUDES_DIRNAME = ".bash_profile.d"
 ::BASH_INCLUDES_SUBDIR = ::File.expand_path("#{WS_HOME}/#{BASH_INCLUDES_DIRNAME}")
 
 action :create do
